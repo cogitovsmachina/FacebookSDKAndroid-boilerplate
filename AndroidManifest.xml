@@ -30,6 +30,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" >
         </activity>
+        <activity
+            android:name="mx.androidtitlan.simplefacebookexample.ShareDialogActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light" >
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

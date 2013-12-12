@@ -16,10 +16,14 @@ import com.facebook.Response;
 import com.facebook.Session;
 
 import mx.androidtitlan.simplefacebookexample.R;
+import mx.androidtitlan.simplefacebookexample.ShareDialogActivity;
 import mx.androidtitlan.simplefacebookexample.R.layout;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.EnvironmentCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +37,9 @@ public class SelectionFragment extends Fragment implements OnClickListener {
 			.asList("publish_actions");
 	private Button publishButton;
 	private boolean pendingPublishReauthorization;
+	private Button shareDialogButton;
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
+
 	public static final SelectionFragment newInstance() {
 		SelectionFragment fragment = new SelectionFragment();
 		// Bundle bundle = new Bundle(1);
@@ -51,6 +57,8 @@ public class SelectionFragment extends Fragment implements OnClickListener {
 				false);
 		publishButton = (Button) view.findViewById(R.id.share_button);
 		publishButton.setOnClickListener(this);
+		shareDialogButton = (Button) view.findViewById(R.id.share_dialog_button);
+		shareDialogButton.setOnClickListener(this);
 		return view;
 	}
 
@@ -59,6 +67,9 @@ public class SelectionFragment extends Fragment implements OnClickListener {
 		view.getId();
 		if (view.getId() == R.id.share_button) {
 			publishStory();
+		}
+		if (view.getId() == R.id.share_dialog_button) {
+			startActivity(new Intent(getActivity(), ShareDialogActivity.class));
 		}
 	}
 
@@ -75,27 +86,27 @@ public class SelectionFragment extends Fragment implements OnClickListener {
 			}
 			Bundle shareParams = new Bundle();
 			shareParams.putString("name", "Carrera Zurich para Android 2013");
-//			shareParams.putString("caption",
-//					"Checa mi ruta de entrenamiento para la 1er carrera Zurich 2013, hoy corrí "+" "+"km");
+			// shareParams.putString("caption",
+			// "Checa mi ruta de entrenamiento para la 1er carrera Zurich 2013, hoy corrí "+" "+"km");
+			shareParams.putString("description",
+					"Checa mi ruta de entrenamiento para la 1er carrera Zurich 2013, hoy corrí "
+							+ " " + "km");
+			// shareParams.putString("link",
+			// "http://androidtitlan.mx");
+			// TODO: Use share Dialog instead
+
 			shareParams
-					.putString(
-							"description",
-							"Checa mi ruta de entrenamiento para la 1er carrera Zurich 2013, hoy corrí "+" "+"km");
-//			shareParams.putString("link",
-//					"http://androidtitlan.mx");
-			
-			String photo = Environment.getExternalStorageDirectory().getPath()+"/map.png";
-			shareParams.putString("picture",photo);
-		//	shareParams
-		//			.putString("picture",""+Environment.getExternalStorageDirectory().getPath().toString()+"/map.png");
-//							"https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
+					.putString("picture",
+							"https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
 
 			Request.Callback callback = new Request.Callback() {
 
 				@Override
 				public void onCompleted(Response response) {
+					Log.wtf("***", response.toString());
 					JSONObject graphResponse = response.getGraphObject()
 							.getInnerJSONObject();
+					Log.wtf("***", "");
 					String postId = null;
 					try {
 						postId = graphResponse.getString("id");
@@ -116,7 +127,7 @@ public class SelectionFragment extends Fragment implements OnClickListener {
 
 			Request request = new Request(session, "me/feed", shareParams,
 					HttpMethod.POST, callback);
-			
+
 			RequestAsyncTask task = new RequestAsyncTask(request);
 			task.execute();
 		}
@@ -131,7 +142,5 @@ public class SelectionFragment extends Fragment implements OnClickListener {
 		}
 		return true;
 	}
-	
-
 
 }
