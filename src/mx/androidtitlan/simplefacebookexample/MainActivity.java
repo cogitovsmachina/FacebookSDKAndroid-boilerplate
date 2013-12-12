@@ -1,5 +1,7 @@
 package mx.androidtitlan.simplefacebookexample;
 
+import mx.androidtitlan.simplefacebookexample.fragment.SelectionFragment;
+import mx.androidtitlan.simplefacebookexample.fragment.SplashFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

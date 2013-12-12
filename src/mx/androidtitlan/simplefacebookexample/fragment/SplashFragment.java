@@ -1,5 +1,7 @@
-package mx.androidtitlan.simplefacebookexample;
+package mx.androidtitlan.simplefacebookexample.fragment;
 
+import mx.androidtitlan.simplefacebookexample.R;
+import mx.androidtitlan.simplefacebookexample.R.layout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
